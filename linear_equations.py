@@ -53,7 +53,45 @@ class line(object):
             if c and known_point_x>None and known_point_y>None:
                 self.m=solve(c=c,x=known_point_x,y=known_point_y)
 
-def test_intersect(line1,line2):
+def furthest_left(line1,line2):
+    if line1.endpoint_left == line2.endpoint_left: 
+        #covers equal numbers and both None
+        return None
+    elif line1.endpoint_left is None and not line2.endpoint_left is None:
+        return line1
+    elif line2.endpoint_left is None and not line1.endpoint_left is None:
+        return line2
+    else: #both must have left endpoints, which are not equal
+        if line1.endpoint_left < line2.endpoint_left:
+            return line1
+        elif line2.endpoint_left < line1.endpoint_left: 
+            return line2
+
+def test_intersect(line1, line2): #unfinished
+    #check if they both have domains
+    #if they both do, see if they intersect.
+    if not ((line1.endpoint_left is None and line1.endpoint_right is None) or
+            (line2.endpoint_left is None and line2.endpoint_right is None)): #checks that neither line has no endpoints
+
+
+        #determine which line extends furthest left
+        if type(line1.endpoint_left) is None:
+            if type(line2.endpoint_left) is None:
+                if not line1.m==line2.m:
+                    return True
+            leftmost=line1
+        elif line2.endpoint_left < line1.endpoint_left: 
+            leftmost=line2
+
+
+        #figure out conditions where the domains intersect
+        #right endpoint of line furthest left is RIGHT of left endpoint of other line
+        if ((line1.endpoint_right >= line2.endpoint_left) or
+            (line2.endpoint_right >= line1.endpoint_left))
+            pass
+
+
+
     if not (type(line1.m) is None or type(line2.m) is None):
         if line1.m == line2.m:
             return False
@@ -65,4 +103,5 @@ def test_intersect(line1,line2):
             #x=(c2-c1)/(m1-m2)
             x_solution = (line2.c - line1.c)/(line1.m - line2.m)
             y_solution = (line1.m * x_solution) + line1.c
+
             #ensure solution is within intersection of domains
